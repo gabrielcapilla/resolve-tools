@@ -1,0 +1,24 @@
+[Desktop Entry]
+Type=Service
+MimeType=inode/directory;video/mp4;video/x-matroska;video/quicktime;
+Actions=new;recode;extract;
+X-KDE-Submenu=Resolve Tools
+X-KDE-Submenu[es]=Resolve Tools
+
+[Desktop Action new]
+Name=Project Folder
+Name[es]=Nuevo Proyecto
+Icon=resolve
+Exec=~/.local/share/kio/servicemenus/resolvetools-servicemenus/init -x
+
+[Desktop Action recode]
+Name=Recode Media
+Name[es]=Recodificar Medios
+Icon=DV_ResolveProj
+Exec=~/.local/share/kio/servicemenus/resolvetools-servicemenus/init -y
+
+[Desktop Action extract]
+Name=Extract Audio
+Name[es]=Extraer Audio
+Icon=audio-flac
+Exec=~/.local/share/kio/servicemenus/resolvetools-servicemenus/init -z

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+readonly KIO_DIR="$HOME/.local/share/kio/servicemenus"
+readonly SERVICEMENUS_DIR="$KIO_DIR/resolvetools-servicemenus"
+
+function make_folder() {
+  if [ ! -d "$SERVICEMENUS_DIR" ]; then
+    mkdir -p "$SERVICEMENUS_DIR"
+  fi
+}
+
+function install_dot_desktop() {
+  local desktop_file="../desktop/resolvetools.desktop"
+  cp -r "$desktop_file" "$KIO_DIR"
+}
+
+function install_script() {
+  local SRC_DIR="../src"
+  local INIT_FILE="../init"
+
+  cp -r "$SRC_DIR" "$SERVICEMENUS_DIR"
+  cp -r "$INIT_FILE" "$SERVICEMENUS_DIR"
+
+  echo "Resolve Tools installed"
+}
+
+function main() {
+  make_folder
+  install_dot_desktop
+  install_script
+}
+
+main

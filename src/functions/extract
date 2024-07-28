@@ -1,0 +1,16 @@
+#!/bin/bash
+
+RAW_FILE=$*
+FILE="${RAW_FILE#*' '}"
+
+function convertAudio() {
+  if [[ "$FILE" == *.mp4 ]]; then
+    ffmpeg -i "$FILE" -map 0:a -y "${FILE%.*}.flac"
+  else
+    ffmpeg -i "$FILE" -y -c copy -vn -f flac "${FILE%.*}.flac"
+  fi
+}
+
+function extract() {
+  convertAudio "$FILE"
+}

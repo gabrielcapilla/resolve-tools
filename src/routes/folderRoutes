@@ -1,0 +1,11 @@
+#!/bin/bash
+
+export folders=(
+  "Audio"
+  "Audio/Music"
+  "Audio/Voice-over"
+  "Audio/Sound-effects"
+  "Footage/A-Roll"
+  "Footage/B-Roll"
+  "Images"
+)

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# shellcheck disable=SC1091
+source "$(dirname "${BASH_SOURCE[0]}")/getSystemLang"
+
+declare -A dictionary=(
+    [es_inputBox]="Crear nuevo proyecto en"
+    [en_inputBox]="Create new project"
+
+    [es_project]="Nuevo Proyecto"
+    [en_project]="New Project"
+
+    [es_title]="Crear carpetas de proyecto"
+    [en_title]="Create project folders"
+)
+
+function print() {
+    local action=$1
+    lang=$(lang)
+    local code="${lang}_${action}"
+
+    printf "%s" "${dictionary[$code]}"
+}

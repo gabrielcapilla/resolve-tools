@@ -1,0 +1,6 @@
+#!/bin/bash
+
+function dialog() {
+  kdialog_name=$(kdialog --title "$(print title)" --inputbox "$(print inputBox) $CURRENT_DIR/:" --getexistingdirectory "$(print project)" --geometry 512x256)
+  echo "$kdialog_name"
+}

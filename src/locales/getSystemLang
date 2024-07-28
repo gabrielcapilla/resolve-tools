@@ -1,0 +1,12 @@
+#!/bin/bash
+
+function lang() {
+    local lang=${LANG:0:2}
+    local available=("es" "en")
+
+    if [[ " ${available[*]} " == *"$lang"* ]]; then
+        printf "%s" "$lang"
+    else
+        printf "%s" "en"
+    fi
+}
