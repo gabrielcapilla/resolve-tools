@@ -6,6 +6,20 @@ With Resolve Tools, users can save time and effort by having at their disposal a
 
 Explore the Resolve Tools suite and discover how you can simplify and streamline your daily workflows.
 
+## How to install
+
+### Clone the repository
+
+```sh
+git clone https://github.com/gabrielcapilla/resolve-tools.git
+```
+
+### Run the installation script
+
+```sh
+cd resolve-tools/tools && chmod +x setup && ./setup
+```
+
 ## Resolve Tools
 
 ### Extract Audio
