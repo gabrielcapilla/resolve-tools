@@ -1,5 +1,7 @@
 # About Resolve Tools
 
+![Alt text](icons/resolve-tools-dolphin-menu.png)
+
 Resolve Tools is a collection of practical tools and utilities designed to simplify and streamline a variety of common processes and tasks. The toolset covers a wide range of functionality, from file and directory manipulation to workflow automation.
 
 With Resolve Tools, users can save time and effort by having at their disposal a set of efficient and reliable solutions that allow them to focus on their core tasks without worrying about technical details. Resolve Tools offers versatile, easy-to-use tools that can be tailored to a wide variety of needs.
