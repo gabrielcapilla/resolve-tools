@@ -12,7 +12,7 @@ function main() {
   cp "$DESKTOP_FILE" "$LOCAL_DIR"
   cp -r "$SCRIPT_FOLDER" "$LOCAL_DIR"
 
-  echo "Resolve Tools 0.1.0 installed"
+  echo "Resolve Tools 0.2.0 installed"
 }
 
 main
