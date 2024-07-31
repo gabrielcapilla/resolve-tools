@@ -1,17 +1,24 @@
 #!/bin/bash
 
+# SHELLCHECK
 # shellcheck disable=SC1091
+
 source "$(dirname "${BASH_SOURCE[0]}")/getSystemLang"
 
 declare -A dictionary=(
-    [es_inputBox]="Crear nuevo proyecto en"
-    [en_inputBox]="Create new project"
+    # SPANISH
+    [es_kdialog_progressbar@progress]="Trabajando sobre"
+    [es_kdialog_progressbar@title]="Ejecutando"
+    [es_kdialog_name@inputbox]="Crear nuevo proyecto en"
+    [es_kdialog_name@project]="Nuevo Proyecto"
+    [es_kdialog_name@title]="Crear carpetas de proyecto"
 
-    [es_project]="Nuevo Proyecto"
-    [en_project]="New Project"
-
-    [es_title]="Crear carpetas de proyecto"
-    [en_title]="Create project folders"
+    # ENGLISH
+    [en_kdialog_progressbar@progress]="Working On"
+    [en_kdialog_progressbar@title]="Executing"
+    [en_kdialog_name@inputbox]="Create new project"
+    [en_kdialog_name@project]="New Project"
+    [en_kdialog_name@title]="Create project folders"
 )
 
 function print() {
