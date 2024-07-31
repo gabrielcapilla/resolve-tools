@@ -1,19 +1,29 @@
 #!/bin/bash
 
+# SHELLCHECK
 # shellcheck disable=SC1091
-source "$(dirname "$0")/src/functions/dialog"
-source "$(dirname "$0")/src/functions/recode"
-source "$(dirname "$0")/src/functions/folders"
-source "$(dirname "$0")/src/functions/extract"
-source "$(dirname "$0")/src/routes/folderRoutes"
+
+# FUNCTIONS
+source "$(dirname "$0")/src/functions/kdialogProgress"
+source "$(dirname "$0")/src/functions/recodeMedia"
+source "$(dirname "$0")/src/functions/newProject"
+source "$(dirname "$0")/src/functions/extractAudio"
+
+# LOCALES
 source "$(dirname "$0")/src/locales/getDictionary"
 source "$(dirname "$0")/src/locales/getSystemLang"
 
+# ROUTES
+source "$(dirname "$0")/src/routes/folderRoutes"
+
+# GLOBAL VARIABLE
+export INPUT=$*
+
 while getopts ":xyz:" opt; do
   case $opt in
-  x) folders ;;
-  y) recode ;;
-  z) extract ;;
+  x) new_project ;;
+  y) recode_media ;;
+  z) extract_audio ;;
   *) echo "Error: -$OPTARG" >&2 ;;
   esac
 done
