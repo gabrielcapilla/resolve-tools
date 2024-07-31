@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# SHELLCHECK
+# shellcheck disable=SC2154
+
+function get_name() {
+  kdialog_name=$(
+    kdialog \
+      --title "$(print kdialog_name@title)" \
+      --inputbox "$(print kdialog_name@inputbox) $SELECTED_DIR/:" \
+      --getexistingdirectory "$(print kdialog_name@project)" \
+      --geometry 512x256
+  )
+
+  echo "$kdialog_name"
+}
+
+function new_project() {
+  SELECTED_DIR="${INPUT#*' '}"
+  kdialog_name=$(get_name)
+
+  if [ -n "$kdialog_name" ]; then
+    mkdir -p "$SELECTED_DIR/$kdialog_name"
+    for folder in "${folders[@]}"; do
+      mkdir -p "$SELECTED_DIR/$kdialog_name/$folder"
+    done
+  fi
+}
