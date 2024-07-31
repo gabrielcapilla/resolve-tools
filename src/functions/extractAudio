@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# SHELLCHECK
+# shellcheck disable=SC2034
+# shellcheck disable=SC2086
+
+function convert_audio() {
+  kdialog_duration=$(kdialog_duration)
+  kdialog_progressbar=$(kdialog_progressbar)
+
+  if [[ "$FILE" == *.mp4 ]]; then
+    ffmpeg \
+      -i "$FILE" \
+      -map 0:a \
+      -y "${FILE%.*}.flac" 2>&1 | update_progress_bar
+  else
+    ffmpeg \
+      -i "$FILE" \
+      -y \
+      -c copy \
+      -vn \
+      -f flac "${FILE%.*}.flac" 2>&1 | update_progress_bar
+  fi
+
+  qdbus $kdialog_progressbar close
+}
+
+function extract_audio() {
+  FILE="${INPUT#*' '}"
+  convert_audio "$FILE"
+}
