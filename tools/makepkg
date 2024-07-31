@@ -1,0 +1,38 @@
+#!/bin/bash
+
+BUILDPKG_DIR="$(dirname "$0")/build"
+SERVICEMENUS_DIR="$BUILDPKG_DIR/resolvetools-servicemenus"
+DESKTOP_FILE="../desktop/resolvetools.desktop"
+SCRIPTS_DIR="$(dirname "$0")/pkg-scripts"
+INIT_FILE="../init"
+SRC_DIR="../src"
+
+function make_folder() {
+  mkdir -p "$SERVICEMENUS_DIR"
+}
+
+function copy_files() {
+  cp -r "$DESKTOP_FILE" "$BUILDPKG_DIR"
+  cp "$SCRIPTS_DIR"/*.sh "$BUILDPKG_DIR"
+  cp "$INIT_FILE" "$SERVICEMENUS_DIR"
+  cp -r "$SRC_DIR" "$SERVICEMENUS_DIR"
+}
+
+function make_compress() {
+  pushd "$BUILDPKG_DIR" || return 1
+  tar -czf "../../resolvetools.tar.gz" .
+  popd || return 1
+}
+
+function clean_build() {
+  rm -rf "$BUILDPKG_DIR"
+}
+
+function main() {
+  make_folder
+  copy_files
+  make_compress
+  clean_build
+}
+
+main
