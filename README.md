@@ -1,4 +1,6 @@
-# About Resolve Tools
+# Resolve Tools
+
+<https://www.pling.com/p/2182811/>
 
 ![Alt text](icons/resolve-tools-dolphin-menu.png)
 
@@ -22,7 +24,7 @@ git clone https://github.com/gabrielcapilla/resolve-tools.git
 cd resolve-tools/tools && chmod +x setup && ./setup
 ```
 
-## Resolve Tools
+## About Resolve Tools
 
 ### Extract Audio
 
@@ -50,8 +52,13 @@ Poject Folder
 
 ## Roadmap
 
-- Progress indicators: I will implement the use of the kdialog tool to provide users with visual progress indicators during the ‘Recode Media’ and ‘Extract Audio’ processes. This will provide users with a better experience and feedback on the status of tasks.
-- Error handling: I will integrate kdialog to notify users in a clear and friendly way when errors occur during the execution of the tools. This will help users to more easily understand and resolve any problems that may arise.
-- Support for more video formats: I will extend ‘Recode Media’ support to include additional video formats, such as AVI, WMV and WEBM. This will give users greater flexibility and more options for converting their video files.
-- Audio extraction enhancements: I will expand support for ‘Extract Audio’ to include the ability to extract audio in additional formats, such as OGG and WAV, in addition to the current FLAC format. This will allow users to choose the audio format that best suits their needs.
-- Multi-language support: I will implement the ability to generate the project folder structure in multiple languages. This will allow users from different regions and cultural backgrounds to use Resolve Tools in a more natural and tailored way.
+### To Do
+
+- [ ] Support for more video formats: I will extend ‘Recode Media’ support to include additional video formats, such as AVI, WMV and WEBM. This will give users greater flexibility and more options for converting their video files.
+- [ ] Audio extraction enhancements: I will expand support for ‘Extract Audio’ to include the ability to extract audio in additional formats, such as OGG and WAV, in addition to the current FLAC format. This will allow users to choose the audio format that best suits their needs.
+- [ ] Error handling: I will integrate kdialog to notify users in a clear and friendly way when errors occur during the execution of the tools. This will help users to more easily understand and resolve any problems that may arise.
+- [ ] Multi-language support: I will implement the ability to generate the project folder structure in multiple languages. This will allow users from different regions and cultural backgrounds to use Resolve Tools in a more natural and tailored way.
+
+### Completed ✓
+
+- [x] Progress indicators: I will implement the use of the kdialog tool to provide users with visual progress indicators during the ‘Recode Media’ and ‘Extract Audio’ processes. This will provide users with a better experience and feedback on the status of tasks.
