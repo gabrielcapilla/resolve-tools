@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# SHELLCHECK
+# shellcheck disable=SC2034
+# shellcheck disable=SC2086
+
+function convert_video() {
+  kdialog_duration=$(kdialog_duration)
+  kdialog_progressbar=$(kdialog_progressbar)
+
+  ffmpeg \
+    -i "$FILE" \
+    -c copy \
+    -c:a pcm_s16le \
+    -f mov "${FILE%.*}.mov" 2>&1 | update_progress_bar
+
+  qdbus $kdialog_progressbar close
+}
+
+function recode_media() {
+  FILE="${INPUT#*' '}"
+  convert_video "$FILE"
+}
