@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# SHELLCHECK
+# shellcheck disable=SC2154
+# shellcheck disable=SC2086
+# shellcheck disable=SC2046
+
+function kdialog_progressbar() {
+  kdialog \
+    --title "$(print kdialog_progressbar@title)" \
+    --progressbar "$(print kdialog_progressbar@progress) $FILE" \
+    0
+}
+
+function kdialog_duration() {
+  ffprobe \
+    -v error \
+    -show_entries format=duration \
+    -of default=nokey=1:noprint_wrappers=1 \
+    "$FILE"
+}
+
+function update_progress_bar() {
+  while read -r line; do
+    progress=$(echo "$line" | grep -o -E 'time=\S+' | cut -d'=' -f2)
+    if [ -n "$progress" ]; then
+      qdbus $kdialog_progressbar Set "" value $(echo "scale=2; $progress / $kdialog_duration * 100" | bc)
+    fi
+  done
+}
