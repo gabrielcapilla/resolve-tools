@@ -1,30 +1,37 @@
 function get_name() {
-  # Launch kdialog for asking for a folder name
-  local -r kdialog_name=$(
-    kdialog \
-      --title "$(i18n kname@title)" \
-      --inputbox "$(i18n kname@inputbox) $SELECTED_DIR/:" \
-      --getexistingdirectory "$(i18n kname@project)" \
-      --geometry 512x256
-  )
-
-  echo "$kdialog_name"
+  # Launch kdialog to ask for a new project name.
+  kdialog \
+    --title "$(i18n kname@title)" \
+    --inputbox "$(i18n kname@inputbox) $SELECTED_DIR/" \
+    "$(i18n kname@project)"
 }
 
 function new_project() {
-  # Create a new project directory structure
-  local -r kdialog_name=$(get_name)
+  # Create a new project directory structure.
+  local project_name
+  project_name=$(get_name)
 
+  # Exit if the user cancelled the dialog (project_name is empty)
+  if [[ -z "$project_name" ]]; then
+    return 0
+  fi
+
+  local lang
   lang=$(get_lang)
 
-  if [ -n "$kdialog_name" ]; then
-    mkdir -p "$SELECTED_DIR/$kdialog_name"
+  # Get the name of the array for the selected language (e.g., "FOLDERS_en")
+  local -r folder_array_name="${FOLDERS_MAP[$lang]}"
 
-    IFS=' ' read -ra folder_names <<<"${FOLDERS[$lang]}"
+  # Create a name reference to the actual language-specific array
+  local -n folder_list="$folder_array_name"
 
-    for folder in "${folder_names[@]}"; do
-      mkdir -p "$SELECTED_DIR/$kdialog_name/$folder"
-    done
+  # Create all project subdirectories
+  for folder in "${folder_list[@]}"; do
+    mkdir -p "$SELECTED_DIR/$project_name/$folder"
+  done
 
-  fi
+  # (debug) Show success message
+  # local success_msg
+  # success_msg=$(i18n kname@success_msg)
+  # kdialog --msgbox "${success_msg//%1/$project_name}" --title "$(i18n kname@success_title)"
 }
