@@ -1,5 +1,5 @@
 function convert_audio() {
-  # Convert an video file to FLAC format based on its codec
+  # Convert an audio stream to a FLAC file.
 
   local CODEC
   CODEC=$(
@@ -16,43 +16,20 @@ function convert_audio() {
     return 1
   fi
 
-  # Convert the audio file based on its codec
+  # Set ffmpeg options based on the codec.
+  # The goal is to always produce a valid FLAC file, discarding video (-vn).
+  local FFMPEG_OPTS
   case "$CODEC" in
-  aac)
-    ffmpeg \
-      -i "$AUDIO_FILE" \
-      -map 0:a \
-      -y "${AUDIO_FILE%.*}.flac"
-    ;;
-  opus | vorbis | mp3)
-    ffmpeg \
-      -i "$AUDIO_FILE" \
-      -y \
-      -vn \
-      -c:a flac \
-      "${AUDIO_FILE%.*}.flac"
-    ;;
-  wav)
-    ffmpeg \
-      -i "$AUDIO_FILE" \
-      -y \
-      -c copy \
-      "${AUDIO_FILE%.*}.flac"
-    ;;
-  alac | ac3 | dts)
-    ffmpeg \
-      -i "$AUDIO_FILE" \
-      -y \
-      -c:a flac \
-      "${AUDIO_FILE%.*}.flac"
+  flac)
+    # If the source is already flac, just copy the stream to avoid re-encoding.
+    FFMPEG_OPTS=("-c:a" "copy")
     ;;
   *)
-    ffmpeg \
-      -i "$AUDIO_FILE" \
-      -y \
-      -c copy \
-      -vn \
-      "${AUDIO_FILE%.*}.flac"
+    # For all other codecs, re-encode the audio stream to the 'flac' codec.
+    FFMPEG_OPTS=("-c:a" "flac")
     ;;
   esac
+
+  # Execute ffmpeg with the determined options.
+  ffmpeg -i "$AUDIO_FILE" -y -vn "${FFMPEG_OPTS[@]}" "${AUDIO_FILE%.*}.flac"
 }
