@@ -29,33 +29,37 @@ source "$(dirname "$0")/src/routes/folder_routes.sh"
 while getopts ":x:y:z:" opt; do
   case $opt in
   x)
-    SELECTED_DIR="$OPTARG"
-
-    if [[ ! -d "$SELECTED_DIR" ]]; then
-      log_error "Argument for option \"Project Folder\" cannot be a file."
+    # Option for creating a new project in a directory
+    INPUT_PATH="$OPTARG"
+    if [[ ! -d "$INPUT_PATH" ]]; then
+      log_error "Option '-x' requires a directory, but received a file."
     fi
+
+    # Set the global variable expected by new_project.sh
+    SELECTED_DIR="$INPUT_PATH"
     new_project
     ;;
-  y)
-    FILE="$OPTARG"
 
-    if [[ ! -f "$FILE" ]]; then
-      log_error "Argument for option \"Recode Media\" must be a file and cannot be empty."
+  y | z)
+    # Options for processing a media file
+    INPUT_PATH="$OPTARG"
+    if [[ ! -f "$INPUT_PATH" ]]; then
+      log_error "Option '-$opt' requires an existing file."
     fi
 
-    convert_video
-    ;;
-  z)
-    AUDIO_FILE="$OPTARG"
-
-    if [[ ! -f "$AUDIO_FILE" ]]; then
-      log_error "Argument for option \"Extract Audio\" must be a file and cannot be empty."
+    if [[ "$opt" == "y" ]]; then
+      # Set the global variable expected by recode_media.sh
+      FILE="$INPUT_PATH"
+      convert_video
+    else # opt is "z"
+      # Set the global variable expected by extract_audio.sh
+      AUDIO_FILE="$INPUT_PATH"
+      convert_audio
     fi
-
-    convert_audio
     ;;
+
   *)
-    log_error "Error: -$OPTARG"
+    log_error "Invalid option: -$OPTARG"
     ;;
   esac
 done
