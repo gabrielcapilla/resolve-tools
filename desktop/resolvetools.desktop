@@ -1,0 +1,26 @@
+[Desktop Entry]
+Type=Service
+Icon=resolve
+Actions=x;y;z;
+X-KDE-Priority=TopLevel
+X-KDE-Submenu=Resolve Tools
+X-KDE-ServiceTypes=KonqPopupMenu/Plugin
+MimeType=inode/directory;video/mp4;video/x-matroska;video/quicktime;video/webm;video/avi;video/ogg;video/VOB;
+
+[Desktop Action x]
+Name=Project Folder
+Name[es]=Nuevo Proyecto
+Icon=resolve
+Exec=$HOME/.local/share/kio/servicemenus/resolvetools/init.sh -x
+
+[Desktop Action y]
+Name=Recode Media
+Name[es]=Recodificar Medios
+Icon=gnome-mime-application-x-resolveproj
+Exec=$HOME/.local/share/kio/servicemenus/resolvetools/init.sh -y
+
+[Desktop Action z]
+Name=Extract Audio
+Name[es]=Extraer Audio
+Icon=audio-flac
+Exec=$HOME/.local/share/kio/servicemenus/resolvetools/init.sh -z
