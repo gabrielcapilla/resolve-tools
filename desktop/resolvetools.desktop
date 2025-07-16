@@ -17,7 +17,7 @@ Exec=$HOME/.local/share/kio/servicemenus/resolvetools/init.sh -x
 Name=Recode Media
 Name[es]=Recodificar Medios
 Icon=gnome-mime-application-x-resolveproj
-Exec=$HOME/.local/share/kio/servicemenus/resolvetools/init.sh -y
+Exec=$HOME/.local/share/kio/servicemenus/resolvetools/init.sh -y %F
 
 [Desktop Action z]
 Name=Extract Audio

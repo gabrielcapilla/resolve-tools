@@ -14,6 +14,7 @@ function log_error() {
 }
 
 # Functions
+source "$(dirname "$0")/src/functions/media_utils.sh"
 source "$(dirname "$0")/src/functions/extract_audio.sh"
 source "$(dirname "$0")/src/functions/kdialog_debug.sh"
 source "$(dirname "$0")/src/functions/kdialog_error.sh"

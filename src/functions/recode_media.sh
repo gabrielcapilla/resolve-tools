@@ -19,7 +19,7 @@ function convert_video() {
 
   kprogress=$(kdialog_progressbar)
 
-  duration_seconds=$(get_duration)
+  duration_seconds=$(get_duration "$FILE")
 
   if [[ -z "$duration_seconds" ]]; then
     qdbus $kprogress close
