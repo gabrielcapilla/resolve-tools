@@ -1,9 +1,25 @@
 function convert_audio() {
-  # Convert an audio stream to a FLAC file.
+  # Convert an audio stream to a FLAC file with progress display.
+
+  # The kdialog_progressbar function expects a global FILE variable.
+  # We assign AUDIO_FILE to FILE for compatibility.
+  local FILE="$AUDIO_FILE"
+  local ktemp
+  local kprogress
+  local duration_seconds
+
+  kprogress=$(kdialog_progressbar)
+  ktemp=$(mktemp)
+
+  duration_seconds=$(get_duration "$AUDIO_FILE")
+  if [[ -z "$duration_seconds" ]]; then
+    qdbus "$kprogress" close
+    stderr "$(i18n stderr@acodec)"
+    return 1
+  fi
 
   local CODEC
   CODEC=$(
-    # Detect the audio codec of the input file
     ffprobe -v error \
       -select_streams a:0 \
       -show_entries stream=codec_name \
@@ -11,25 +27,25 @@ function convert_audio() {
   )
 
   if [[ -z "$CODEC" ]]; then
-    # If no codec detected, print an error message and exit
+    qdbus "$kprogress" close
     stderr "$(i18n stderr@acodec)"
     return 1
   fi
 
-  # Set ffmpeg options based on the codec.
-  # The goal is to always produce a valid FLAC file, discarding video (-vn).
   local FFMPEG_OPTS
   case "$CODEC" in
   flac)
-    # If the source is already flac, just copy the stream to avoid re-encoding.
     FFMPEG_OPTS=("-c:a" "copy")
     ;;
   *)
-    # For all other codecs, re-encode the audio stream to the 'flac' codec.
     FFMPEG_OPTS=("-c:a" "flac")
     ;;
   esac
 
-  # Execute ffmpeg with the determined options.
-  ffmpeg -i "$AUDIO_FILE" -y -vn "${FFMPEG_OPTS[@]}" "${AUDIO_FILE%.*}.flac"
+  # Execute ffmpeg in the background, reporting progress to the temp file.
+  ffmpeg -i "$AUDIO_FILE" -y -vn "${FFMPEG_OPTS[@]}" "${AUDIO_FILE%.*}.flac" \
+    -progress "$ktemp" >/dev/null 2>&1 &
+
+  local ffmpeg_pid=$!
+  monitor_progress "$ffmpeg_pid" "$duration_seconds"
 }
