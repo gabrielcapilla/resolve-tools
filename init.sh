@@ -36,9 +36,7 @@ while getopts ":x:y:z:" opt; do
       log_error "Option '-x' requires a directory, but received a file."
     fi
 
-    # Set the global variable expected by new_project.sh
-    SELECTED_DIR="$INPUT_PATH"
-    new_project
+    new_project "$INPUT_PATH"
     ;;
 
   y | z)
@@ -49,13 +47,9 @@ while getopts ":x:y:z:" opt; do
     fi
 
     if [[ "$opt" == "y" ]]; then
-      # Set the global variable expected by recode_media.sh
-      FILE="$INPUT_PATH"
-      convert_video
+      convert_video "$INPUT_PATH"
     else # opt is "z"
-      # Set the global variable expected by extract_audio.sh
-      AUDIO_FILE="$INPUT_PATH"
-      convert_audio
+      convert_audio "$INPUT_PATH"
     fi
     ;;
 

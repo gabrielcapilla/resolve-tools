@@ -1,15 +1,17 @@
 function get_name() {
+  local -r base_dir="$1"
   # Launch kdialog to ask for a new project name.
   kdialog \
     --title "$(i18n kname@title)" \
-    --inputbox "$(i18n kname@inputbox) $SELECTED_DIR/" \
+    --inputbox "$(i18n kname@inputbox) $base_dir/" \
     "$(i18n kname@project)"
 }
 
 function new_project() {
+  local -r selected_dir="$1"
   # Create a new project directory structure.
   local project_name
-  project_name=$(get_name)
+  project_name=$(get_name "$selected_dir")
 
   # Exit if the user cancelled the dialog (project_name is empty)
   if [[ -z "$project_name" ]]; then
@@ -27,7 +29,7 @@ function new_project() {
 
   # Create all project subdirectories
   for folder in "${folder_list[@]}"; do
-    mkdir -p "$SELECTED_DIR/$project_name/$folder"
+    mkdir -p "$selected_dir/$project_name/$folder"
   done
 
   # (debug) Show success message

@@ -9,7 +9,10 @@ function start_ffmpeg() {
 }
 
 function convert_video() {
+  local -r input_file="$1"
   # Main function to convert a video
+
+  local -r FILE="$input_file"
   local ktemp
   local kprogress
   local output_file
@@ -19,7 +22,7 @@ function convert_video() {
 
   kprogress=$(kdialog_progressbar)
 
-  duration_seconds=$(get_duration "$FILE")
+  duration_seconds=$(get_duration "$input_file")
 
   if [[ -z "$duration_seconds" ]]; then
     qdbus $kprogress close
@@ -33,7 +36,7 @@ function convert_video() {
     mkdir -p "$output_dir"
   fi
 
-  output_file="$output_dir/$(basename "${FILE%.*}.mkv")"
+  output_file="$output_dir/$(basename "${input_file%.*}.mkv")"
 
   start_ffmpeg
 
