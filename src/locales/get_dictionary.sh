@@ -8,6 +8,7 @@ export -A dictionary=(
   [es_kname@success_title]="Operación Completada"
   [es_kname@success_msg]="El proyecto '%1' ha sido creado exitosamente."
   [es_stderr@acodec]="Códec de Audio no encontrado."
+  [es_stderr@vcodec]="Códec de Vídeo no encontrado."
 
   # ENGLISH
   [en_kprogress@progress]="Working On"
@@ -18,4 +19,5 @@ export -A dictionary=(
   [en_kname@success_title]="Operation Complete"
   [en_kname@success_msg]="Project '%1' was created successfully."
   [en_stderr@acodec]="Audio codec not detected."
+  [en_stderr@vcodec]="Video codec not detected."
 )
