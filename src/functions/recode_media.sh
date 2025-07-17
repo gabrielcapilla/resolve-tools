@@ -1,7 +1,7 @@
 function convert_video() {
   local -r input_file="$1"
 
-  local -r output_dir="optimized_media"
+  local -r output_dir="media_files"
   mkdir -p "$output_dir"
   local -r output_file="$output_dir/$(basename "${input_file%.*}.mkv")"
 

@@ -1,6 +1,9 @@
 function convert_audio() {
   local -r input_file="$1"
 
+  local -r output_dir="media_files"
+  mkdir -p "$output_dir"
+
   local codec
   codec=$(
     ffprobe -v error \
@@ -24,7 +27,7 @@ function convert_audio() {
     ;;
   esac
 
-  local -r output_file="${input_file%.*}.flac"
+  local -r output_file="$output_dir/$(basename "${input_file%.*}.flac")"
 
   run_ffmpeg_with_progress "$input_file" "$output_file" "${ffmpeg_opts[@]}"
 }
