@@ -2,17 +2,6 @@
 
 set -o errexit -o nounset -o pipefail
 
-function log_error() {
-  # Log an error message and exit with a non-zero status
-  local -r error_message="Error: $*"
-
-  # Show the error box using kdialog
-  kdialog --error "$error_message" \
-    --title "Resolve Tools Error" \
-    --icon "error"
-  exit 1
-}
-
 # Functions
 source "$(dirname "$0")/src/functions/media_utils.sh"
 source "$(dirname "$0")/src/functions/extract_audio.sh"
@@ -33,7 +22,7 @@ while getopts ":x:y:z:" opt; do
     # Option for creating a new project in a directory
     INPUT_PATH="$OPTARG"
     if [[ ! -d "$INPUT_PATH" ]]; then
-      log_error "Option '-x' requires a directory, but received a file."
+      stderr "Option '-x' requires a directory, but received a file."
     fi
 
     new_project "$INPUT_PATH"
@@ -43,7 +32,7 @@ while getopts ":x:y:z:" opt; do
     # Options for processing a media file
     INPUT_PATH="$OPTARG"
     if [[ ! -f "$INPUT_PATH" ]]; then
-      log_error "Option '-$opt' requires an existing file."
+      stderr "Option '-$opt' requires an existing file."
     fi
 
     if [[ "$opt" == "y" ]]; then
@@ -54,7 +43,7 @@ while getopts ":x:y:z:" opt; do
     ;;
 
   *)
-    log_error "Invalid option: -$OPTARG"
+    stderr "Invalid option: -$OPTARG"
     ;;
   esac
 done
