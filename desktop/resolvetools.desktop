@@ -1,26 +1,42 @@
 [Desktop Entry]
 Type=Service
 Icon=resolve
-Actions=x;y;z;
+Actions=project;recode;extract-audio
 X-KDE-Priority=TopLevel
 X-KDE-Submenu=Resolve Tools
 X-KDE-ServiceTypes=KonqPopupMenu/Plugin
 MimeType=inode/directory;video/mp4;video/x-matroska;video/quicktime;video/webm;video/avi;video/ogg;video/VOB;
+X-KDE-AuthorizeAction=shell_access
 
-[Desktop Action x]
-Name=Project Folder
-Name[es]=Nuevo Proyecto
+[Desktop Action project]
+Name=Create Resolve Project
+Name[es]=Crear Proyecto Resolve
+Name[fr]=Créer un projet Resolve
+Name[de]=Resolve-Projekt erstellen
+Name[it]=Crea progetto Resolve
+Name[pt]=Criar projeto Resolve
+Name[ru]=Создать проект Resolve
 Icon=resolve
 Exec=$HOME/.local/share/kio/servicemenus/resolvetools/init.sh -x
 
-[Desktop Action y]
-Name=Recode Media
-Name[es]=Recodificar Medios
+[Desktop Action recode]
+Name=Recode Media Files
+Name[es]=Recodificar Archivos Multimedia
+Name[fr]=Recoder les fichiers média
+Name[de]=Mediendateien recodieren
+Name[it]=Ricodifica file multimediali
+Name[pt]=Recodificar arquivos de mídia
+Name[ru]=Перекодировать медиафайлы
 Icon=gnome-mime-application-x-resolveproj
 Exec=$HOME/.local/share/kio/servicemenus/resolvetools/init.sh -y
 
-[Desktop Action z]
-Name=Extract Audio
-Name[es]=Extraer Audio
+[Desktop Action extract-audio]
+Name=Extract Audio from Video
+Name[es]=Extraer Audio del Vídeo
+Name[fr]=Extraire l'audio de la vidéo
+Name[de]=Audio aus Video extrahieren
+Name[it]=Estrai audio dal video
+Name[pt]=Extrair áudio do vídeo
+Name[ru]=Извлечь аудио из видео
 Icon=audio-flac
 Exec=$HOME/.local/share/kio/servicemenus/resolvetools/init.sh -z

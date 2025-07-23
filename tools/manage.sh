@@ -21,23 +21,25 @@ readonly R="\033[1;31m" G="\033[1;32m" B="\033[1;34m" Y="\033[1;33m" E="\033[0m"
 
 # Logging Functions
 function log_error() {
-  printf >&2 "${R}::${E} %s\n" "$*"
+  printf >&2 "${R}::${E} %s
+" "$*"
   exit 1
 }
 
 function log_success() {
-  printf "${G}::${E} %s\n" "$*"
+  printf "${G}::${E} %s
+" "$*"
 }
 
 function log_info() {
-  printf "${B}::${E} %s\n" "$*"
+  printf "${B}::${E} %s
+" "$*"
 }
 
 function log_warn() {
-  printf "${Y}::${E} %s\n" "$*"
+  printf "${Y}::${E} %s
+" "$*"
 }
-
-# Action Functions
 
 function action_install() {
   log_info "Starting Resolve Tools installation..."
@@ -97,19 +99,84 @@ function action_package() {
   cp "${DESKTOP_SRC_DIR}/${PROJECT_NAME}.desktop" "${BUILD_DIR}/"
 
   # Create a simple installation script for the package
-  cat >"${BUILD_DIR}/install.sh" <<EOF
+  cat >"${BUILD_DIR}/install.sh" <<'EOF'
 #!/bin/env bash
-set -euo pipefail
-echo "Installing Resolve Tools..."
-INSTALL_DIR="\$HOME/.local/share/kio/servicemenus"
-mkdir -p "\$INSTALL_DIR"
-cp -r "./${PROJECT_NAME}" "\$INSTALL_DIR/"
-cp "./${PROJECT_NAME}.desktop" "\$INSTALL_DIR/"
-chmod +x "\$INSTALL_DIR/${PROJECT_NAME}.desktop"
-echo "Installation complete!"
+# Strict mode for error handling
+set -o errexit -o nounset -o pipefail
+declare -r LOCAL_DIR="$HOME/.local/share/kio/servicemenus"
+# Colors RGB & End
+declare -r R="\033[1;31m" G="\033[1;32m" B="\033[1;34m" Y="\033[1;33m" E="\033[0m"
+function stderr() {
+  # Log an error message and exit with a non-zero status
+  printf >&2 "${R}Error: ${E}line(%d) → %s
+" "${BASH_LINENO[0]}" "$*"
+  exit 1
+}
+function get_script_dir() {
+  # Get the directory of the script
+  local -r SELF_PATH="$(realpath -- "${BASH_SOURCE[0]}")"
+  dirname -- "${SELF_PATH}"
+}
+function main() {
+  local -r DESKTOP_FILE="$(get_script_dir)/resolvetools.desktop"
+  local -r SCRIPT_FOLDER="$(get_script_dir)/resolvetools"
+  printf "%b
+" "Copying${B} $(realpath -- "${DESKTOP_FILE}")${E}"
+  chmod +x -- "$DESKTOP_FILE" || stderr "Failure to add execution permissions ${DESKTOP_FILE}"
+  cp -- "$DESKTOP_FILE" "$LOCAL_DIR" || stderr "Failed copying ${DESKTOP_FILE}"
+  printf "%b
+" "Copying${B} $(realpath -- "${SCRIPT_FOLDER}")${E}"
+  cp -r "$SCRIPT_FOLDER" "$LOCAL_DIR" || stderr "Failed copying ${SCRIPT_FOLDER}"
+  printf "
+%b
+" "${G}Resolve Tools installed successfully!${E}"
+}
+main
 EOF
   chmod +x "${BUILD_DIR}/install.sh"
 
+  # Create a simple uninstall script for the package
+  cat >"${BUILD_DIR}/uninstall.sh" <<'EOF'
+#!/bin/env bash
+# Strict mode for error handling
+set -o errexit -o nounset -o pipefail
+# Colors RGB & End
+declare -r R="\033[1;31m" G="\033[1;32m" B="\033[1;34m" Y="\033[1;33m" E="\033[0m"
+declare -r LOCAL_DIR="$HOME/.local/share/kio/servicemenus"
+function stderr() {
+  # Log an error message and exit with a non-zero status
+  printf >&2 "${R}Error:${E} line(%d) → %s
+" "${BASH_LINENO[0]}" "$*"
+  exit 1
+}
+function main() {
+  local -r DESKTOP_FILE="$LOCAL_DIR/resolvetools.desktop"
+  local -r SCRIPT_FOLDER="$LOCAL_DIR/resolvetools"
+  local status=false
+  if [ -f "$DESKTOP_FILE" ]; then
+    printf "%b
+" "Removing ${B}${DESKTOP_FILE}${E}"
+    rm -- "$DESKTOP_FILE" || stderr "Failed to remove ${DESKTOP_FILE}"
+    status=true
+  fi
+  if [ -d "$SCRIPT_FOLDER" ]; then
+    printf "%b
+" "Removing ${B}${SCRIPT_FOLDER}${E}"
+    rm -rf -- "$SCRIPT_FOLDER" || stderr "Failed to remove ${SCRIPT_FOLDER}"
+    status=true
+  fi
+  if $status; then
+    printf "
+%b
+" "${G}Resolve Tools uninstalled successfully!${E}"
+  else
+    printf "%b
+" "${Y}Nothing to uninstall.${E}"
+  fi
+}
+main
+EOF
+  chmod +x "${BUILD_DIR}/uninstall.sh"
   log_info "Compressing package to ${pkg_file}..."
   (cd "${BUILD_DIR}" && tar -cJf "${pkg_file}" --transform "s|^\./||" .)
 
@@ -131,7 +198,7 @@ function show_usage() {
   printf "Commands:\n"
   printf "  install    Installs the service menus on the local system.\n"
   printf "  uninstall  Removes the service menus from the system.\n"
-  printf "  package    Creates a tar.xz package for distribution.\n"
+  printf "  make    Creates a tar.xz package for distribution.\n"
 }
 
 function main() {
@@ -143,7 +210,7 @@ function main() {
   case "$1" in
   install) action_install ;;
   uninstall) action_uninstall ;;
-  package) action_package ;;
+  make) action_package ;;
   *)
     log_error "Unknown command: '$1'"
     ;;
