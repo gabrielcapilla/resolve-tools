@@ -83,7 +83,7 @@ function action_package() {
   action_clean
 
   local pkg_content_dir="${BUILD_DIR}/${PROJECT_NAME}"
-  local pkg_file="${PROJECT_ROOT}/${PROJECT_NAME}.tar.xz"
+  local pkg_file="${PROJECT_ROOT}/${PROJECT_NAME}.tar.gz"
 
   log_info "Creating package directory structure..."
   mkdir -p "${pkg_content_dir}"
@@ -174,7 +174,7 @@ main
 EOF
   chmod +x "${BUILD_DIR}/uninstall.sh"
   log_info "Compressing package to ${pkg_file}..."
-  (cd "${BUILD_DIR}" && tar -cJf "${pkg_file}" --transform "s|^\./||" .)
+  (cd "${BUILD_DIR}" && tar -czf "${pkg_file}" --transform "s|^\./||" .)
 
   log_success "Package created successfully at ${pkg_file}!"
   log_info "Cleaning up temporary files..."
