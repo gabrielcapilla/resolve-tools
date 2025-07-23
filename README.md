@@ -81,7 +81,7 @@ The project includes a management script at `tools/manage.sh` to facilitate the 
 
 - `install`: Installs the service menus on the local system (`~/.local/share/kio/servicemenus`).
 - `uninstall`: Removes all installation files from the system.
-- `package`: Creates a `tar.xz` distribution package in the project's root directory, ready to be shared.
+- `package`: Creates a `tar.gz` distribution package in the project's root directory, ready to be shared.
 
 ---
 
