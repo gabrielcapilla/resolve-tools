@@ -21,24 +21,20 @@ readonly R="\033[1;31m" G="\033[1;32m" B="\033[1;34m" Y="\033[1;33m" E="\033[0m"
 
 # Logging Functions
 function log_error() {
-  printf >&2 "${R}::${E} %s
-" "$*"
+  printf >&2 "${R}::${E} %s" "$*"
   exit 1
 }
 
 function log_success() {
-  printf "${G}::${E} %s
-" "$*"
+  printf "${G}::${E} %s" "$*"
 }
 
 function log_info() {
-  printf "${B}::${E} %s
-" "$*"
+  printf "${B}::${E} %s" "$*"
 }
 
 function log_warn() {
-  printf "${Y}::${E} %s
-" "$*"
+  printf "${Y}::${E} %s" "$*"
 }
 
 function action_install() {
