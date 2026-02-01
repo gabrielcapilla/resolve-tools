@@ -2,19 +2,18 @@
 
 set -o errexit -o nounset -o pipefail
 
-# Functions
-source "$(dirname "$0")/src/functions/media_utils.sh"
-source "$(dirname "$0")/src/functions/extract_audio.sh"
-source "$(dirname "$0")/src/functions/kdialog_debug.sh"
-source "$(dirname "$0")/src/functions/kdialog_error.sh"
-source "$(dirname "$0")/src/functions/kdialog_progress.sh"
-source "$(dirname "$0")/src/functions/new_project.sh"
-source "$(dirname "$0")/src/functions/recode_media.sh"
-# Locales
-source "$(dirname "$0")/src/locales/get_dictionary.sh"
-source "$(dirname "$0")/src/locales/get_system_lang.sh"
-# Routes
-source "$(dirname "$0")/src/routes/folder_routes.sh"
+function source_all() {
+  # Auto-source all modules
+  local base
+  base="$(dirname "$0")/src"
+  for dir in config core functions locales routes; do
+    for f in "$base/$dir"/*.sh; do
+      [[ -f "$f" ]] && source "$f"
+    done
+  done
+}
+
+source_all
 
 while getopts ":x:y:z:" opt; do
   case $opt in
@@ -31,15 +30,9 @@ while getopts ":x:y:z:" opt; do
   y | z)
     # Options for processing a media file
     INPUT_PATH="$OPTARG"
-    if [[ ! -f "$INPUT_PATH" ]]; then
-      stderr "Option '-$opt' requires an existing file."
-    fi
+    [[ ! -f "$INPUT_PATH" ]] && stderr "Option '-$opt' requires an existing file."
 
-    if [[ "$opt" == "y" ]]; then
-      convert_video "$INPUT_PATH"
-    else # opt is "z"
-      convert_audio "$INPUT_PATH"
-    fi
+    if [[ "$opt" == "y" ]]; then recode_video "$INPUT_PATH"; else extract_audio "$INPUT_PATH"; fi
     ;;
 
   *)

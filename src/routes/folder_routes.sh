@@ -1,27 +1,15 @@
-# English folder structure
-declare -a FOLDERS_en=(
-  "Audio/Music"
-  "Audio/Voice over"
-  "Audio/Sound effects"
-  "Footage/A-Roll"
-  "Footage/B-Roll"
-  "Images"
-  "Exports"
+#!/bin/env bash
+
+# Project folder structure definitions
+# Format: lang=folder1:folder2:folder3...
+
+declare -gA FOLDER_STRUCTURE=(
+  [en]="Audio/Music:Audio/Voice over:Audio/Sound effects:Footage/A-Roll:Footage/B-Roll:Images:Exports"
+  [es]="Audio/Música:Audio/Locución:Audio/Efectos de sonido:Metraje/A-Roll:Metraje/B-Roll:Imágenes:Exportaciones"
 )
 
-# Spanish folder structure
-declare -a FOLDERS_es=(
-  "Audio/Música"
-  "Audio/Locución"
-  "Audio/Efectos de sonido"
-  "Metraje/A-Roll"
-  "Metraje/B-Roll"
-  "Imágenes"
-  "Exportaciones"
-)
-
-# Associative array to map a language to the corresponding array's name
-declare -A FOLDERS_MAP=(
-  [en]="FOLDERS_en"
-  [es]="FOLDERS_es"
-)
+function get_folders() {
+  # Get folder list for current language
+  local -r lang="${LANG:0:2}"
+  echo "${FOLDER_STRUCTURE["$lang"]:-${FOLDER_STRUCTURE["en"]}}" | tr ':' '\n'
+}
